@@ -2985,11 +2985,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 910c98876ded8424980c388527aaf0c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  frontButton: {fileID: 2105660940}
-  backButton: {fileID: 1415271030}
-  leftButton: {fileID: 642057130}
-  rightButton: {fileID: 396236204}
-  speedSlider: {fileID: 1325414375}
+  moveControlPanel: {fileID: 1421340036}
   ledControlPanel: {fileID: 50912447}
   soundControlPanel: {fileID: 1966689644}
   connectingObject: {fileID: 1882698793}
@@ -3681,18 +3677,7 @@ MonoBehaviour:
   m_Value: 60
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1238466672}
-        m_MethodName: OnSpeedChanged
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &1397255615
 GameObject:
   m_ObjectHideFlags: 0
@@ -3967,8 +3952,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1421340035}
+  - component: {fileID: 1421340036}
   m_Layer: 5
-  m_Name: MoveButtons
+  m_Name: Move
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3999,6 +3985,23 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1421340036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1421340034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5e9c5ab45c0a49528f58941111574b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frontButton: {fileID: 2105660940}
+  backButton: {fileID: 1415271030}
+  leftButton: {fileID: 642057130}
+  rightButton: {fileID: 396236204}
+  speedSlider: {fileID: 1325414375}
 --- !u!1 &1455023637
 GameObject:
   m_ObjectHideFlags: 0

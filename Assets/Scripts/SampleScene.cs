@@ -4,11 +4,7 @@ using UnityEngine.UI;
 
 public class SampleScene : MonoBehaviour
 {
-    [SerializeField] private MoveButton frontButton;
-    [SerializeField] private MoveButton backButton;
-    [SerializeField] private MoveButton leftButton;
-    [SerializeField] private MoveButton rightButton;
-    [SerializeField] private Slider speedSlider;
+    [SerializeField] private MoveControlPanel moveControlPanel;
     [SerializeField] private LedControlPanel ledControlPanel;
     [SerializeField] private SoundControlPanel soundControlPanel;
     [SerializeField] private GameObject connectingObject;
@@ -41,10 +37,10 @@ public class SampleScene : MonoBehaviour
 
         UIUtility.TrySetActive(connectingObject, true);
 
-        InitializeMoveButtons();
-        InitializeSpeedSlider();
-        InitializeLedControlPanel();
-        InitializeSoundControlPanel();
+        moveControlPanel.OnValueChanged = OnSpeedChanged;
+        ledControlPanel.OnTurnedOn = OnTurnLedOn;
+        ledControlPanel.OnTurnedOff = OnTurnLedOff;
+        soundControlPanel.OnPlaySound = OnPlaySound;
 
         cube = await ToioCubeManagerService.Instance.CubeManager.SingleConnect();
         await cube.ConfigMotorRead(true);
@@ -63,32 +59,6 @@ public class SampleScene : MonoBehaviour
         }
 
         UIUtility.TrySetText(batteryText, $"でんち: {cube.battery}");
-    }
-
-    private void InitializeMoveButtons()
-    {
-        frontButton.OnValueChanged = OnSpeedChanged;
-        backButton.OnValueChanged = OnSpeedChanged;
-        leftButton.OnValueChanged = OnSpeedChanged;
-        rightButton.OnValueChanged = OnSpeedChanged;
-    }
-
-    private void InitializeSpeedSlider()
-    {
-        speedSlider.minValue = 8 + turnSpeed;
-        speedSlider.maxValue = 115 - turnSpeed;
-        speedSlider.normalizedValue = 0.5f;
-    }
-
-    private void InitializeLedControlPanel()
-    {
-        ledControlPanel.OnTurnedOn = OnTurnLedOn;
-        ledControlPanel.OnTurnedOff = OnTurnLedOff;
-    }
-
-    private void InitializeSoundControlPanel()
-    {
-        soundControlPanel.OnPlaySound = OnPlaySound;
     }
 
     private void AddCallback(Cube c)
@@ -128,20 +98,14 @@ public class SampleScene : MonoBehaviour
         UIUtility.TrySetColor(graphic, value ? Color.red : Color.gray);
     }
 
-    public void OnSpeedChanged()
+    public void OnSpeedChanged(int left, int right)
     {
         if (cube == null)
         {
             return;
         }
 
-        var frontSpeed = frontButton.IsPressed ? (int)speedSlider.value : 0;
-        var backSpeed = backButton.IsPressed ? (int)speedSlider.value : 0;
-        var leftTurnSpeed = leftButton.IsPressed ? turnSpeed : 0;
-        var rightTurnSpeed = rightButton.IsPressed ? turnSpeed : 0;
-        var leftMotorSpeed = frontSpeed - backSpeed + rightTurnSpeed - leftTurnSpeed;
-        var rightMotorSpeed = frontSpeed - backSpeed + leftTurnSpeed - rightTurnSpeed;
-        cube.Move(leftMotorSpeed, rightMotorSpeed, 0);
+        cube.Move(left, right, 0);
     }
 
     private void OnTurnLedOn(Color color)
