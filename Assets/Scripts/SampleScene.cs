@@ -9,6 +9,8 @@ public class SampleScene : MonoBehaviour
     [SerializeField] private MoveButton leftButton;
     [SerializeField] private MoveButton rightButton;
     [SerializeField] private Slider speedSlider;
+    [SerializeField] private LedControlPanel ledControlPanel;
+    [SerializeField] private SoundControlPanel soundControlPanel;
     [SerializeField] private GameObject connectingObject;
 
     [SerializeField] private Text versionText;
@@ -41,6 +43,8 @@ public class SampleScene : MonoBehaviour
 
         InitializeMoveButtons();
         InitializeSpeedSlider();
+        InitializeLedControlPanel();
+        InitializeSoundControlPanel();
 
         cube = await ToioCubeManagerService.Instance.CubeManager.SingleConnect();
         await cube.ConfigMotorRead(true);
@@ -74,6 +78,17 @@ public class SampleScene : MonoBehaviour
         speedSlider.minValue = 8 + turnSpeed;
         speedSlider.maxValue = 115 - turnSpeed;
         speedSlider.normalizedValue = 0.5f;
+    }
+
+    private void InitializeLedControlPanel()
+    {
+        ledControlPanel.OnTurnedOn = OnTurnLedOn;
+        ledControlPanel.OnTurnedOff = OnTurnLedOff;
+    }
+
+    private void InitializeSoundControlPanel()
+    {
+        soundControlPanel.OnPlaySound = OnPlaySound;
     }
 
     private void AddCallback(Cube c)
@@ -127,6 +142,36 @@ public class SampleScene : MonoBehaviour
         var leftMotorSpeed = frontSpeed - backSpeed + rightTurnSpeed - leftTurnSpeed;
         var rightMotorSpeed = frontSpeed - backSpeed + leftTurnSpeed - rightTurnSpeed;
         cube.Move(leftMotorSpeed, rightMotorSpeed, 0);
+    }
+
+    private void OnTurnLedOn(Color color)
+    {
+        if (cube == null)
+        {
+            return;
+        }
+
+        ToioLedUtility.TurnLedOn(cube, color, 0);
+    }
+
+    private void OnTurnLedOff()
+    {
+        if (cube == null)
+        {
+            return;
+        }
+
+        cube.TurnLedOff();
+    }
+
+    private void OnPlaySound(int soundId)
+    {
+        if (cube == null)
+        {
+            return;
+        }
+
+        cube.PlayPresetSound(soundId);
     }
 
     private void OnPressButton(Cube c)
