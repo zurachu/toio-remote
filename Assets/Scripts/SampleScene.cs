@@ -27,7 +27,6 @@ public class SampleScene : MonoBehaviour
     [SerializeField] private Text rightMotorSpeedText;
 
     private static readonly string callbackKey = nameof(SampleScene);
-    private static readonly int turnSpeed = 10;
 
     private Cube cube;
 
