@@ -9,7 +9,9 @@ public class SampleScene : MonoBehaviour
     [SerializeField] private LedControlPanel ledControlPanel;
     [SerializeField] private SoundControlPanel soundControlPanel;
     [SerializeField] private GameObject connectingObject;
+    [SerializeField] private TextAsset sdkVersion;
 
+    [SerializeField] private Text sdkVersionText;
     [SerializeField] private Text versionText;
     [SerializeField] private Text idText;
     [SerializeField] private Text addrText;
@@ -78,8 +80,9 @@ public class SampleScene : MonoBehaviour
 
     private void InitializeStatus(Cube c)
     {
-        UIUtility.TrySetText(versionText, $"バージョン: {c.version}");
-        UIUtility.TrySetText(idText, $"ID: {c.id}");
+        UIUtility.TrySetText(sdkVersionText, sdkVersion.text);
+        UIUtility.TrySetText(versionText, $"ファームウェアバージョン: {c.version}");
+        UIUtility.TrySetText(idText, $"しきべつID: {c.id}");
         UIUtility.TrySetText(addrText, $"アドレス: {c.addr}");
 
         OnPressButton(c);
