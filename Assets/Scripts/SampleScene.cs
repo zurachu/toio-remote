@@ -61,18 +61,20 @@ public class SampleScene : MonoBehaviour
         }
 
         UIUtility.TrySetText(batteryText, $"でんち: {cube.battery}");
+        TrySetColor(collisionText, cube.isCollisionDetected);
+        TrySetColor(doubleTapText, cube.isDoubleTap);
     }
 
     private void AddCallback(Cube c)
     {
         c.buttonCallback.AddListener(callbackKey, OnPressButton);
         c.slopeCallback.AddListener(callbackKey, OnSlope);
-        c.collisionCallback.AddListener(callbackKey, OnCollision);
+        c.collisionCallback.AddListener(callbackKey, DelayedRequestSensor);
         c.idCallback.AddListener(callbackKey, OnUpdatedId);
         c.standardIdCallback.AddListener(callbackKey, OnUpdatedStandardId);
         c.idMissedCallback.AddListener(callbackKey, OnMissedId);
         c.standardIdMissedCallback.AddListener(callbackKey, OnMissedStandardId);
-        c.doubleTapCallback.AddListener(callbackKey, OnDoubleTap);
+        c.doubleTapCallback.AddListener(callbackKey, DelayedRequestSensor);
         c.poseCallback.AddListener(callbackKey, OnPose);
         c.shakeCallback.AddListener(callbackKey, OnShake);
         c.motorSpeedCallback.AddListener(callbackKey, OnMotorSpeed);
@@ -87,10 +89,8 @@ public class SampleScene : MonoBehaviour
 
         OnPressButton(c);
         OnSlope(c);
-        OnCollision(c);
         OnMissedId(c);
         OnMissedStandardId(c);
-        OnDoubleTap(c);
         OnPose(c);
         OnShake(c);
         OnMotorSpeed(c);
@@ -151,11 +151,9 @@ public class SampleScene : MonoBehaviour
         TrySetColor(slopeText, c.isSloped);
     }
 
-    private async void OnCollision(Cube c)
+    private async void DelayedRequestSensor(Cube c)
     {
-        TrySetColor(collisionText, c.isCollisionDetected);
-
-        await UniTask.Delay(50);
+        await UniTask.Delay(500);
         c.RequestSensor();
     }
 
@@ -192,11 +190,6 @@ public class SampleScene : MonoBehaviour
     {
         UIUtility.TrySetColor(standardIdText, Color.gray);
         UIUtility.TrySetColor(angleText, Color.gray);
-    }
-
-    private void OnDoubleTap(Cube c)
-    {
-        TrySetColor(doubleTapText, c.isDoubleTap);
     }
 
     private void OnPose(Cube c)
