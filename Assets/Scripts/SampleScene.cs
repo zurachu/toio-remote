@@ -1,4 +1,5 @@
-﻿using toio;
+﻿using Cysharp.Threading.Tasks;
+using toio;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -147,9 +148,12 @@ public class SampleScene : MonoBehaviour
         TrySetColor(slopeText, c.isSloped);
     }
 
-    private void OnCollision(Cube c)
+    private async void OnCollision(Cube c)
     {
         TrySetColor(collisionText, c.isCollisionDetected);
+
+        await UniTask.Delay(50);
+        c.RequestSensor();
     }
 
     private void OnUpdatedId(Cube c)
