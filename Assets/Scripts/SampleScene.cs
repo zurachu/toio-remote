@@ -15,6 +15,7 @@ public class SampleScene : MonoBehaviour
     [SerializeField] private Text versionText;
     [SerializeField] private Text idText;
     [SerializeField] private Text addrText;
+    [SerializeField] private Text localNameText;
     [SerializeField] private Text batteryText;
     [SerializeField] private Text buttonText;
     [SerializeField] private Text slopeText;
@@ -86,6 +87,7 @@ public class SampleScene : MonoBehaviour
         UIUtility.TrySetText(versionText, $"ファームウェアバージョン: {c.version}");
         UIUtility.TrySetText(idText, $"しきべつID: {c.id}");
         UIUtility.TrySetText(addrText, $"アドレス: {c.addr}");
+        UIUtility.TrySetText(localNameText, $"ローカルネーム: {c.localName}");
 
         OnPressButton(c);
         OnSlope(c);
