@@ -154,7 +154,7 @@ public class SampleScene : MonoBehaviour
     private async void DelayedRequestSensor(Cube c)
     {
         await UniTask.Delay(500);
-        c.RequestSensor();
+        c.RequestMotionSensor();
     }
 
     private void OnUpdatedId(Cube c)
