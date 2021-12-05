@@ -308,25 +308,25 @@ public class SampleScene : MonoBehaviour
         {
             case Cube.MagnetState.None:
             default:
-                UIUtility.TrySetText(magnetStateText, "じょうたい: なし");
+                UIUtility.TrySetText(magnetStateText, "なし");
                 break;
             case Cube.MagnetState.S_Center:
-                UIUtility.TrySetText(magnetStateText, "じょうたい: Sちゅうおう");
+                UIUtility.TrySetText(magnetStateText, "Sちゅうおう");
                 break;
             case Cube.MagnetState.N_Center:
-                UIUtility.TrySetText(magnetStateText, "じょうたい: Nちゅうおう");
+                UIUtility.TrySetText(magnetStateText, "Nちゅうおう");
                 break;
             case Cube.MagnetState.S_Right:
-                UIUtility.TrySetText(magnetStateText, "じょうたい: Sみぎ");
+                UIUtility.TrySetText(magnetStateText, "Sみぎ");
                 break;
             case Cube.MagnetState.N_Right:
-                UIUtility.TrySetText(magnetStateText, "じょうたい: Nみぎ");
+                UIUtility.TrySetText(magnetStateText, "Nみぎ");
                 break;
             case Cube.MagnetState.S_Left:
-                UIUtility.TrySetText(magnetStateText, "じょうたい: Sひだり");
+                UIUtility.TrySetText(magnetStateText, "Sひだり");
                 break;
             case Cube.MagnetState.N_Left:
-                UIUtility.TrySetText(magnetStateText, "じょうたい: Nひだり");
+                UIUtility.TrySetText(magnetStateText, "Nひだり");
                 break;
         }
     }

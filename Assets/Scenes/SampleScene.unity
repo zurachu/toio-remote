@@ -1317,14 +1317,14 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 6c3655f3f491d430880afa2bc26baee0, type: 3}
-    m_FontSize: 32
+    m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 40
     m_Alignment: 3
     m_AlignByGeometry: 0
-    m_RichText: 1
+    m_RichText: 0
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
@@ -4436,7 +4436,7 @@ MonoBehaviour:
   shakeText: {fileID: 1282673060}
   leftMotorSpeedText: {fileID: 1912471076}
   rightMotorSpeedText: {fileID: 1970289551}
-  magnetButtonText: {fileID: 0}
+  magnetButtonText: {fileID: 1037499006}
   magnetStateText: {fileID: 1415719623}
   magneticForceRoot: {fileID: 837437958}
   magneticForceXText: {fileID: 313573289}
@@ -6214,14 +6214,14 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 6c3655f3f491d430880afa2bc26baee0, type: 3}
-    m_FontSize: 32
+    m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2
     m_MaxSize: 40
     m_Alignment: 3
     m_AlignByGeometry: 0
-    m_RichText: 1
+    m_RichText: 0
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
