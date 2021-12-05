@@ -29,10 +29,28 @@ public class SampleScene : MonoBehaviour
     [SerializeField] private Text shakeText;
     [SerializeField] private Text leftMotorSpeedText;
     [SerializeField] private Text rightMotorSpeedText;
+    [SerializeField] private Text magnetButtonText;
+    [SerializeField] private Text magnetStateText;
+    [SerializeField] private GameObject magneticForceRoot;
+    [SerializeField] private Text magneticForceXText;
+    [SerializeField] private Text magneticForceYText;
+    [SerializeField] private Text magneticForceZText;
+    [SerializeField] private Text attitudeButtonText;
+    [SerializeField] private GameObject attitudeEulerRoot;
+    [SerializeField] private Text attitudeEulerXText;
+    [SerializeField] private Text attitudeEulerYText;
+    [SerializeField] private Text attitudeEulerZText;
+    [SerializeField] private GameObject attitudeQuaternionRoot;
+    [SerializeField] private Text attitudeQuaternionXText;
+    [SerializeField] private Text attitudeQuaternionYText;
+    [SerializeField] private Text attitudeQuaternionZText;
+    [SerializeField] private Text attitudeQuaternionWText;
 
     private static readonly string callbackKey = nameof(SampleScene);
 
     private Cube cube;
+    private int currentMagneticMode;
+    private int currentAttitudeFormat;
 
     private async void Start()
     {
@@ -79,6 +97,9 @@ public class SampleScene : MonoBehaviour
         c.poseCallback.AddListener(callbackKey, OnPose);
         c.shakeCallback.AddListener(callbackKey, OnShake);
         c.motorSpeedCallback.AddListener(callbackKey, OnMotorSpeed);
+        c.magnetStateCallback.AddListener(callbackKey, OnMagnetState);
+        c.magneticForceCallback.AddListener(callbackKey, OnMagneticForce);
+        c.attitudeCallback.AddListener(callbackKey, OnAttitude);
     }
 
     private void InitializeStatus(Cube c)
@@ -96,6 +117,11 @@ public class SampleScene : MonoBehaviour
         OnPose(c);
         OnShake(c);
         OnMotorSpeed(c);
+        OnChangedMagneticMode(0);
+        OnMagnetState(c);
+        OnMagneticForce(c);
+        OnChangedAttitudeFormat(0);
+        OnAttitude(c);
     }
 
     private void TrySetColor(Graphic graphic, bool value)
@@ -111,6 +137,30 @@ public class SampleScene : MonoBehaviour
         }
 
         cube.Move(left, right, 0);
+    }
+
+    public async void OnClickChangeMagneticMode()
+    {
+        var nextMagneticMode = currentMagneticMode + 1;
+        if (nextMagneticMode > 2)
+        {
+            nextMagneticMode = 0;
+        }
+
+        await cube.ConfigMagneticSensor((Cube.MagneticMode)nextMagneticMode, 20, Cube.MagneticNotificationType.OnChanged);
+        OnChangedMagneticMode(nextMagneticMode);
+    }
+
+    public async void OnClickChangeAttitudeFormat()
+    {
+        var nextAttitudeFormat = currentAttitudeFormat + 1;
+        if (nextAttitudeFormat > 2)
+        {
+            nextAttitudeFormat = 1;
+        }
+
+        await cube.ConfigAttitudeSensor((Cube.AttitudeFormat)nextAttitudeFormat, 10, Cube.AttitudeNotificationType.OnChanged);
+        OnChangedAttitudeFormat(nextAttitudeFormat);
     }
 
     private void OnTurnLedOn(Color color)
@@ -229,5 +279,94 @@ public class SampleScene : MonoBehaviour
     {
         UIUtility.TrySetText(leftMotorSpeedText, $"ひだり: {c.leftSpeed}");
         UIUtility.TrySetText(rightMotorSpeedText, $"みぎ　: {c.rightSpeed}");
+    }
+
+    private void OnChangedMagneticMode(int magneticMode)
+    {
+        currentMagneticMode = magneticMode;
+        UIUtility.TrySetActive(magnetStateText, false);
+        UIUtility.TrySetActive(magneticForceRoot, false);
+        switch ((Cube.MagneticMode)currentMagneticMode)
+        {
+            case Cube.MagneticMode.MagnetState:
+                UIUtility.TrySetText(magnetButtonText, "じしゃくのじょうたい");
+                UIUtility.TrySetActive(magnetStateText, true);
+                break;
+            case Cube.MagneticMode.MagneticForce:
+                UIUtility.TrySetText(magnetButtonText, "じりょくのつよさ");
+                UIUtility.TrySetActive(magneticForceRoot, true);
+                break;
+            default:
+                UIUtility.TrySetText(magnetButtonText, "じしゃく");
+                break;
+        }
+    }
+
+    private void OnMagnetState(Cube c)
+    {
+        switch (c.magnetState)
+        {
+            case Cube.MagnetState.None:
+            default:
+                UIUtility.TrySetText(magnetStateText, "じょうたい: なし");
+                break;
+            case Cube.MagnetState.S_Center:
+                UIUtility.TrySetText(magnetStateText, "じょうたい: Sちゅうおう");
+                break;
+            case Cube.MagnetState.N_Center:
+                UIUtility.TrySetText(magnetStateText, "じょうたい: Nちゅうおう");
+                break;
+            case Cube.MagnetState.S_Right:
+                UIUtility.TrySetText(magnetStateText, "じょうたい: Sみぎ");
+                break;
+            case Cube.MagnetState.N_Right:
+                UIUtility.TrySetText(magnetStateText, "じょうたい: Nみぎ");
+                break;
+            case Cube.MagnetState.S_Left:
+                UIUtility.TrySetText(magnetStateText, "じょうたい: Sひだり");
+                break;
+            case Cube.MagnetState.N_Left:
+                UIUtility.TrySetText(magnetStateText, "じょうたい: Nひだり");
+                break;
+        }
+    }
+
+    private void OnMagneticForce(Cube c)
+    {
+        UIUtility.TrySetText(magneticForceXText, $"X: {c.magneticForce.x}");
+        UIUtility.TrySetText(magneticForceYText, $"Y: {c.magneticForce.y}");
+        UIUtility.TrySetText(magneticForceZText, $"Z: {c.magneticForce.z}");
+    }
+
+    private void OnChangedAttitudeFormat(int attitudeFormat)
+    {
+        currentAttitudeFormat = attitudeFormat;
+        UIUtility.TrySetActive(attitudeEulerRoot, false);
+        UIUtility.TrySetActive(attitudeQuaternionRoot, false);
+        switch ((Cube.AttitudeFormat)currentAttitudeFormat)
+        {
+            case Cube.AttitudeFormat.Eulers:
+                UIUtility.TrySetText(attitudeButtonText, "オイラー");
+                UIUtility.TrySetActive(attitudeEulerRoot, true);
+                break;
+            case Cube.AttitudeFormat.Quaternion:
+                UIUtility.TrySetText(attitudeButtonText, "クォータニオン");
+                UIUtility.TrySetActive(attitudeQuaternionRoot, true);
+                break;
+            default:
+                UIUtility.TrySetText(attitudeButtonText, "しせいかく");
+                break;
+        }
+    }
+
+    private void OnAttitude(Cube c)
+    {
+        UIUtility.TrySetText(attitudeEulerXText, $"X: {c.eulers.x}");
+        UIUtility.TrySetText(attitudeEulerYText, $"Y: {c.eulers.y}");
+        UIUtility.TrySetText(attitudeEulerZText, $"Z: {c.eulers.z}");
+        UIUtility.TrySetText(attitudeQuaternionXText, $"X: {c.quaternion.x}");
+        UIUtility.TrySetText(attitudeQuaternionYText, $"Y: {c.quaternion.y}");
+        UIUtility.TrySetText(attitudeQuaternionZText, $"Z: {c.quaternion.z}");
+        UIUtility.TrySetText(attitudeQuaternionWText, $"W: {c.quaternion.w}");
     }
 }
