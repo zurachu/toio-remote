@@ -13,7 +13,7 @@ public class ToioCubeManagerService
             if (instance == null)
             {
                 instance = new ToioCubeManagerService();
-                instance.CubeManager = new CubeManager();
+                instance.CubeManager = new CubeManager(ToioSdkConfig.Instance.ConnectType);
             }
 
             return instance;
