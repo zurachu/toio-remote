@@ -4,6 +4,9 @@
     package="com.unity3d.player">
   <uses-permission android:name="android.permission.BLUETOOTH" />
   <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+  <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
+  <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+
   <!--
          If your app targets Android 9 or lower, you can declare
          ACCESS_COARSE_LOCATION instead.
